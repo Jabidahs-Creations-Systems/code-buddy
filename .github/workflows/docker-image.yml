@@ -33,5 +33,6 @@ jobs:
 
     - name: Push Docker image
       run: |
-        docker tag my-image-name:${{ env.VERSION }} ${{ secrets.DOCKERHUB_USERNAME }}/my-image-name:${{ env.VERSION }}
-        docker push ${{ secrets.DOCKERHUB_USERNAME }}/my-image-name:${{ env.VERSION }}
+        DOCKERHUB_IMAGE=$(echo ${{ secrets.DOCKERHUB_USERNAME }}/my-image-name | tr '[:upper:]' '[:lower:]')
+        docker tag my-image-name:${{ env.VERSION }} $DOCKERHUB_IMAGE:${{ env.VERSION }}
+        docker push $DOCKERHUB_IMAGE:${{ env.VERSION }}
