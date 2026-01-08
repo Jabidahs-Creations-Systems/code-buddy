@@ -35,12 +35,20 @@ EOF
 
 echo "Making request to CodeBuddy AI Agent..."
 
-# Make the CURL request
-RESPONSE=$(curl -s --location 'http://64.23.245.115:8080/v1/code-review-agent' \
+# Make the CURL request with HTTP status code checking
+HTTP_CODE=$(curl -s -w "%{http_code}" --location 'http://64.23.245.115:8080/v1/code-review-agent' \
   --header 'Content-Type: application/json' \
-  --data "$PAYLOAD")
+  --data "$PAYLOAD" \
+  -o /tmp/response.txt)
 
 # Check if request was successful
+if [ "$HTTP_CODE" -ne 200 ]; then
+  echo "Error: CodeBuddy API returned HTTP status $HTTP_CODE"
+  exit 1
+fi
+
+RESPONSE=$(cat /tmp/response.txt)
+
 if [ -z "$RESPONSE" ]; then
   echo "Error: Empty response from CodeBuddy API"
   exit 1
