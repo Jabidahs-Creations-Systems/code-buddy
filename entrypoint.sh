@@ -32,4 +32,4 @@ RESPONSE=$(curl -s --location 'http://64.23.245.115:8080/v1/code-review-agent' \
   --data "$PAYLOAD")
 
 # Set the action output
-echo "::set-output name=response::$RESPONSE"
+echo "response=$RESPONSE" >> $GITHUB_OUTPUT
